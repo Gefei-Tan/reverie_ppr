@@ -2,7 +2,7 @@
 
 use std::fs::File;
 use std::io;
-use std::io::{BufRead, BufReader};
+use std::io::{BufRead, BufReader, BufWriter};
 use std::marker::PhantomData;
 use std::mem;
 use std::process::exit;
@@ -169,6 +169,15 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
     // timer ends
     let elapsed = now.elapsed();
     println!("Elapsed: {:.2?}", elapsed);
+
+    // Write proof to file
+    let proof_file = File::create("./proof/proof.bin")?;
+    let proof_writer = BufWriter::new(proof_file);
+    if bincode::serialize_into(proof_writer, &proof).is_ok() {
+        println!("write proof to file");
+    } else {
+        println!("could not write proof to file");
+    }
 
     // Verify the proof
     if proof.verify(program_arc, wire_counts) {
