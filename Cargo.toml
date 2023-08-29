@@ -49,3 +49,7 @@ path = "src/lib.rs"
 [[bin]]
 name = "speed-reverie"
 path = "src/main.rs"
+
+[[bin]]
+name = "oneshot-zk"
+path = "src/oneshot-zk.rs"
