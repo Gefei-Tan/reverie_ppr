@@ -172,7 +172,7 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
     println!("Elapsed: {:.2?}", elapsed);
 
     // Write proof to file
-    let proof_file = File::create("./proof/proof.bin")?;
+    let proof_file = File::create("./src/proof/proof.bin")?;
     let proof_writer = BufWriter::new(proof_file);
     if bincode::serialize_into(proof_writer, &proof).is_ok() {
         println!("write proof to file");
