@@ -9,7 +9,7 @@ def ncr(n, r):
     return numer // denom  # or / in Python 2
 
 # number of parties simulated
-n = 16
+n = 8
 
 # statistical security
 target = 0.5**60

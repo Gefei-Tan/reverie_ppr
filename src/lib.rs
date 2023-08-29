@@ -26,11 +26,11 @@ pub const BATCH_SIZE: usize = 128;
 
 /// online repetitions (divisible by 8)
 // const ONLINE_REPS: usize = 40;
-const ONLINE_REPS: usize = 40;
+const ONLINE_REPS: usize = 24;
 
 /// total number of repetitions
 // const TOTAL_REPS: usize = 256;
-const TOTAL_REPS: usize = 256;
+const TOTAL_REPS: usize = 88;
 
 /// preprocessing reps
 const PREPROCESSING_REPS: usize = TOTAL_REPS - ONLINE_REPS;
