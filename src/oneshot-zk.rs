@@ -8,6 +8,7 @@ use std::mem;
 use std::process::exit;
 use std::sync::Arc;
 
+use bincode::{Options, DefaultOptions};
 use async_std::task;
 use reverie::proof::Proof;
 use reverie::Operation;
@@ -178,6 +179,10 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
     } else {
         println!("could not write proof to file");
     }
+
+    // proof size
+    let size = DefaultOptions::new().serialized_size(&proof).unwrap();
+    println!("The size of the serialized object is {} bytes.", size);
 
     // Verify the proof
     if proof.verify(program_arc, wire_counts) {
