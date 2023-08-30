@@ -82,7 +82,7 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
     let mut third_line = String::new();
     reader.read_line(&mut third_line).unwrap();
     let numbers: Vec<&str> = third_line.split_whitespace().collect();
-    let num_output : usize = numbers[0].parse().unwrap();
+    let num_output: usize = numbers[0].parse().unwrap();
     println!("#output: {}", num_output);
 
     // read the gates
@@ -106,41 +106,41 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
         for i in (2 + num_inputs)..(2 + num_inputs + num_outputs) {
             output_indices.push(tokens[i].parse().unwrap());
         }
-        let gate_type: &str = tokens[2+num_inputs+num_outputs];
+        let gate_type: &str = tokens[2 + num_inputs + num_outputs];
 
         match gate_type {
             "INPUT" => program.push(
                 reverie::CombineOperation::GF2(
                     Operation::Input(output_indices[0])
-                    )
-                ),
+                )
+            ),
             "XOR" => program.push(
                 reverie::CombineOperation::GF2(
                     Operation::Add(
                         output_indices[0],
                         input_indices[0],
-                        input_indices[1]
-                        )
+                        input_indices[1],
                     )
-                ),
+                )
+            ),
             "AND" => program.push(
                 reverie::CombineOperation::GF2(
                     Operation::Mul(
                         output_indices[0],
                         input_indices[0],
-                        input_indices[1]
-                        )
+                        input_indices[1],
                     )
-                ),
+                )
+            ),
             "INV" => program.push(
                 reverie::CombineOperation::GF2(
                     Operation::AddConst(
                         output_indices[0],
                         input_indices[0],
-                        true
-                        )
+                        true,
                     )
-                ),
+                )
+            ),
             _ => unimplemented!("Unsupported gate type: {}", gate_type),
         }
     }
@@ -183,7 +183,7 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
     // proof size
     let size = DefaultOptions::new().serialized_size(&proof).unwrap();
     println!("The size of the serialized object is {} bytes.", size);
-
+    println!("CSV friendly {:.2?},{}", elapsed, size);
     // Verify the proof
     if proof.verify(program_arc, wire_counts) {
         Ok(Ok(()))
