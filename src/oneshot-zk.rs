@@ -1,7 +1,7 @@
 #![allow(clippy::explicit_auto_deref)]
 
 use std::fs::File;
-use std::io;
+use std::{env, io};
 use std::io::{BufRead, BufReader, BufWriter};
 use std::marker::PhantomData;
 use std::mem;
@@ -193,11 +193,18 @@ async fn oneshot_zk<WP: Parser<bool> + Send + 'static>(
 }
 
 async fn async_main() {
-    let res = oneshot_zk::<witness::WitParser>(
-        "./program_file.txt",
-        "./witness_file.txt",
-    )
-    .await;
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 3 {
+        eprintln!("Usage: {} <program_file> <witness_file>", args[0]);
+        std::process::exit(1);
+    }
+
+    let program_file = &args[1];
+    let witness_file = &args[2];
+
+    let res = oneshot_zk::<witness::WitParser>(program_file, witness_file).await;
+
     match res {
         Err(e) => {
             eprintln!("Invalid proof: {}", e);
